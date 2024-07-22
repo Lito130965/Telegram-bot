@@ -1,4 +1,5 @@
-FROM python:3.7.2-alpine3.8
-RUN apk update && apk upgrade && apk add bash
-COPY .
-CMD ["python", "main.py"]
+FROM python:3.9
+ADD main.py .
+COPY * .
+RUN pip install requests beautifulsoup4 python-dotenv
+CMD [“python”, “./main.py”]
