@@ -1,5 +1,7 @@
 import asyncio
 import logging
+
+import aiogram.enums.parse_mode
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters.command import Command
 from GetMembers import get_chat_members
@@ -25,8 +27,8 @@ async def message_monitoring(message: types.Message):
             members = await get_chat_members(chat_id)
             result = ''
             for member in members:
-                result += f'{member} '
-            await message.answer(message.text.replace('@all', '') + f'\n🐜🐜🐜🐜🐜\n {result}')
+                result += f'[🐜](tg://user?id={str(member.user.id)})'
+            await message.answer(message.text.replace('@all', '') + f'\n\n {result}', parse_mode='MarkdownV2')
         else:
             await message.answer('@all command working only in group chat, not in private')
 async def main():

@@ -15,7 +15,7 @@ def get_peer_type_new(peer_id: int) -> str:
         return "chat"
 utils.get_peer_type = get_peer_type_new
 
-async def get_chat_members(chat_id) -> list:
+async def get_chat_members_username(chat_id) -> list:
     """ This function return all users tag, except bots """
     app = Client('LTest', bot_token=bot_token, api_id=api_id, api_hash=api_hash, in_memory=True)
     chat_members = []
@@ -23,6 +23,16 @@ async def get_chat_members(chat_id) -> list:
     async for member in app.get_chat_members(chat_id=int(chat_id)):
         if not member.user.is_bot:
             chat_members.append(f'@{member.user.username}')
+
     await app.stop()
     return chat_members
 
+async def get_chat_members(chat_id) -> list:
+    app = Client('LTest', bot_token=bot_token, api_id=api_id, api_hash=api_hash, in_memory=True)
+    chat_members = []
+    await app.start()
+    async for member in app.get_chat_members(chat_id=int(chat_id)):
+        if not member.user.is_bot:
+            chat_members.append(member)
+    await app.stop()
+    return chat_members
