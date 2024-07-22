@@ -2,7 +2,7 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters.command import Command
-from telemembers.GetMembers import get_chat_members
+from GetMembers import get_chat_members
 from config import BOT_TOKEN
 
 logging.basicConfig(level=logging.INFO)
