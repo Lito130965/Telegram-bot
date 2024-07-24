@@ -83,7 +83,7 @@ async def message_monitoring(message: types.Message):
                     members_list = get_all_members_from_db()
                     members_id_list = [mem_id['id'] for mem_id in get_all_members_id_from_db()]
                     emoji = standard_emoji
-                    result += f'[{emoji}](tg://user?id={str(member.id)})'
+
                 else:
                     for user in members_list:
                         if int(member.id) == int(user['id']):
