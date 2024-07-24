@@ -68,7 +68,8 @@ async def message_monitoring(message: types.Message):
     """ If administrator sending a message with '@all' in, the bot will return this message
      without '@all' and tag everyone bellow """
     if '@all' in message.text:
-        if message.chat.type == 'group':
+        #if message.chat.type == 'group':
+        if True:
             chat_id = message.chat.id
             members = await get_chat_members(chat_id)
             result = ''
