@@ -1,11 +1,11 @@
+import json
+import mongo
 from pymongo.mongo_client import MongoClient
-from pymongo.server_api import ServerApi
 from config import MONGO_uri
 import dns.resolver
-from bson.json_util import dumps
 
-dns.resolver.default_resolver=dns.resolver.Resolver(configure=False)
-dns.resolver.default_resolver.nameservers=['8.8.8.8']
+dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
+dns.resolver.default_resolver.nameservers = ['8.8.8.8']
 uri = MONGO_uri
 client = MongoClient(uri)
 
@@ -14,8 +14,7 @@ members_collection = telegram_db.members
 
 def insert_member_to_db(member):
     """ Inserting document to MongoDB """
-    member = eval(member.replace('false', '0').replace('true', '1'))
-    #
+    #member = eval(member.replace('false', '0').replace('true', '1'))
     members_collection.insert_one(member)
 
 def set_emoji_to_user(user_id, emoji):

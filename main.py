@@ -2,11 +2,11 @@ import asyncio
 import logging
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.filters.command import Command
-from GetMembers import get_chat_members, get_chat_member
+from pyromember.GetMembers import get_chat_members, get_chat_member
 from config import BOT_TOKEN
-from mongoDB import insert_member_to_db, get_all_members_from_db, set_emoji_to_user, get_all_members_id_from_db
+from mongo.mongoDB import insert_member_to_db, get_all_members_from_db, set_emoji_to_user, get_all_members_id_from_db
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -14,11 +14,13 @@ dp = Dispatcher()
 members_list = get_all_members_from_db()
 members_id_list = [mem_id['id'] for mem_id in get_all_members_id_from_db()]
 
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     """ Message that bot will return when user using /start command """
     #await message.answer("Hello!")
     pass
+
 
 @dp.message(Command("set_emoji"))
 async def set_emoji(message: types.Message):
@@ -40,6 +42,7 @@ async def set_emoji(message: types.Message):
     except IndexError:
         await message.reply('Send the command and an emoji in one line\n'
                             'For example: /set_emoji 🐜')
+
 
 @dp.message(Command("my_emoji"))
 async def get_user_emoji(message: types.Message):
@@ -65,8 +68,8 @@ async def get_user_emoji(message: types.Message):
 
 @dp.message(F.text)
 async def message_monitoring(message: types.Message):
-    """ If administrator sending a message with '@all' in, the bot will return this message
-     without '@all' and tag everyone bellow """
+    """ If chat member sending a message with '@all' in, the bot will reply him tagged everyone
+     by emoji """
     if '@all' in message.text:
         #if message.chat.type == 'group':
         if True:
@@ -90,13 +93,12 @@ async def message_monitoring(message: types.Message):
                         if int(member.id) == int(user['id']):
                             try:
                                 emoji = user['emoji']
-                            except:
+                            except KeyError:
                                 emoji = standard_emoji
                             break
                 result += f'[{emoji}](tg://user?id={str(member.id)})'
             await message.reply(result, parse_mode='MarkdownV2')
-        else:
-            await message.answer('@all command working only in group chat, not in private')
+
 
 async def main():
     await dp.start_polling(bot)
