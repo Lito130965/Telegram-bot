@@ -8,7 +8,7 @@ from pyromember.GetMembers import get_chat_members, get_chat_member
 from config import BOT_TOKEN
 from mongo.mongoDB import *
 
-logging.basicConfig(level=logging.INFO)
+#logging.basicConfig(level=logging.INFO)
 
 bot = Bot(token=BOT_TOKEN)
 dp = Dispatcher()
@@ -27,6 +27,7 @@ async def cmd_start(message: types.Message):
                          "/my_emoji - to check your emoji\n"
                          "/ignore - to enable or disable ignore mode*\n\n"
                          "*The bot will not to tag you when /all command works")
+    return {'message': 'ok'}
 
 
 @dp.message(Command("set_emoji"))
@@ -45,9 +46,11 @@ async def set_emoji(message: types.Message):
         members_id_list = get_all_members_id_from_db()
 
         await message.reply('Your emoji was changed')
+        return {'message': 'ok'}
     except IndexError:
         await message.reply('Send the command and an emoji in one line\n'
                             'For example: /set_emoji 🐜')
+        return {'message': 'ok'}
 
 
 @dp.message(Command("my_emoji"))
@@ -70,6 +73,8 @@ async def get_user_emoji(message: types.Message):
                     break
                 except KeyError:
                     await message.reply(f'Your emoji is 🐜')
+                    break
+        return {'message': 'ok'}
 
 
 @dp.message(Command('all'))
@@ -109,9 +114,11 @@ async def all_command(message: types.Message):
             result += f'[{emoji}](tg://user?id={str(member.id)})'
     if result == '':
         await message.answer('Nobody was tagged')
+        return {'message': 'ok'}
     else:
         await message.answer(result, parse_mode='MarkdownV2')
         await message.react([{'type': 'emoji', 'emoji': random.choice(['🫡', '👍', '👌', '❤️', '🔥'])}])
+        return {'message': 'ok'}
 
 
 @dp.message(Command('ignore'))
@@ -139,6 +146,7 @@ async def enable_or_disable_ignore(message: types.Message):
             mode = 1
             await message.reply('Ignore mode was enable for this chat')
     change_ignore_mode(user_id=message.from_user.id, chat_id=str(message.chat.id), mode=mode)
+    return {'message': 'ok'}
 
 
 async def main():
