@@ -1,6 +1,5 @@
 import unittest
 import json
-import pymongo.database
 from pymongo.mongo_client import MongoClient
 from mongo.mongoDB import insert_member_to_db, set_emoji_to_user, get_all_members_from_db, get_all_members_id_from_db
 import random
@@ -10,7 +9,8 @@ class TestUsersAndEmoji(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        cls.client = MongoClient('mongodb://localhost')
+        #cls.client = MongoClient('mongodb://localhost')
+        cls.client = MongoClient()
         cls.telegram_db = cls.client.telegramDB
         cls.members_collection = cls.telegram_db.members
         with open('test/members_example.json') as file:
@@ -55,6 +55,7 @@ class TestUsersAndEmoji(unittest.TestCase):
         self.assertEqual(len(get_all_members_from_db()), self.members_collection.count_documents({}))
 
     def test_get_all_members_id_from_db(self):
+        """ Testing to get list of all ids from MongoDB collection """
         self.members_collection.insert_many(self.members)
         self.assertEqual(len(get_all_members_id_from_db()), 3)
         insert_member_to_db({'id': '444444', 'emoji': 'O'})
