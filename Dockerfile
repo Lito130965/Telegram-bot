@@ -1,12 +1,12 @@
 FROM python:latest
 
 WORKDIR /src
-COPY requirements.txt requirements.txt
+COPY requirements.txt /src
 RUN pip install -r requirements.txt
-COPY /mongo /mongo
-COPY /pyromember /pyromember
-COPY .env .env
-COPY config.py config.py
-COPY main.py main.py
+COPY /mongo /src/mongo
+COPY /pyromember /src/pyromember
+COPY .env /src/.env
+COPY config.py /src/config.py
+COPY main.py /src/main.py
 
 CMD python3 /src/main.py
