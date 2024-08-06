@@ -15,7 +15,7 @@
 5. /info -            the bot will send information about himself
 
 
-# Deployment Instructions
+## Deployment Instructions
 For first, you need to clone this repo in your local or cloud machine,
 Next, you need to change .env file, change variables to yours,
 Finally, you would to install python variables on your local or VM machine by ```pip install -r requieremnts.txt``` and run ```python3 main.py```,     // You must to launch MongoDB before it
